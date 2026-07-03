@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://pablo-oss.vercel.app/lumen-frontier">
+  <a href="https://pablomanjarres.com/oss/lumen-frontier">
     <img src=".github/banner.png" alt="Lumen Frontier" width="100%" />
   </a>
 </p>
@@ -22,7 +22,7 @@
   <img src="https://img.shields.io/badge/license-MIT-c8542a?style=flat" alt="MIT License" />
   <img src="https://img.shields.io/badge/status-prototype-e99218?style=flat" alt="Status: prototype" />
   <a href="https://pablomanjarres.com/portfolio/projects/lumen-frontier"><img src="https://img.shields.io/badge/portfolio-pablomanjarres.com-c8542a?style=flat&logo=readme&logoColor=white" alt="Portfolio write-up" /></a>
-  <a href="https://pablo-oss.vercel.app/lumen-frontier"><img src="https://img.shields.io/badge/landing-pablo--oss-000000?style=flat&logo=vercel&logoColor=white" alt="Landing page" /></a>
+  <a href="https://pablomanjarres.com/oss/lumen-frontier"><img src="https://img.shields.io/badge/landing-pablo--oss-000000?style=flat&logo=vercel&logoColor=white" alt="Landing page" /></a>
 </p>
 
 <p align="center">
@@ -135,7 +135,7 @@ MIT. Use it, fork it, take the widget system or the Three.js scene apart.
 ---
 
 <p align="center">
-  <a href="https://pablo-oss.vercel.app/lumen-frontier">Landing page</a>
+  <a href="https://pablomanjarres.com/oss/lumen-frontier">Landing page</a>
   ·
   <a href="https://pablomanjarres.com/portfolio/projects/lumen-frontier">Portfolio write-up</a>
   ·
