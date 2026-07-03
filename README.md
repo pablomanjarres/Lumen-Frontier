@@ -15,17 +15,17 @@ Lumen Frontier is the front-end of the Lumen learning project, built to make stu
 
 ## The two experiences
 
-**LumenOS** — a desktop-style dashboard. Every study tool is a widget you drag by its header, resize from the corner, and arrange on an open canvas. Add more from a categorized widget marketplace, drop in a custom background, flip into edit mode, and the whole layout is saved to your browser so it returns exactly how you left it.
+**LumenOS** is a desktop-style dashboard. Every study tool is a widget you drag by its header, resize from the corner, and arrange on an open canvas. Add more from a categorized widget marketplace, drop in a custom background, flip into edit mode, and the whole layout is saved to your browser so it returns exactly how you left it.
 
-**Lumenverse** — a first-person 3D space, hand-built in Three.js. Each academic subject is a glowing planet. You fly toward them as a tethered astronaut with visible gloves, a helmet visor, and a HUD, using mouse-look and WASD, then trigger a rocket fly-to animation to travel across the system.
+**Lumenverse** is a first-person 3D space, hand-built in Three.js. Each academic subject is a glowing planet. You fly toward them as a tethered astronaut with visible gloves, a helmet visor, and a HUD, using mouse-look and WASD, then trigger a rocket fly-to animation to travel across the system.
 
 ## Highlights
 
-- **13 working widgets**, registry-driven — notes, tasks, pomodoro, goals, journal, music, ambient sounds, stats, flashcards, analytics, progress, time tracker, quick access. Each is lazy-loaded into its own chunk with `React.lazy` + `Suspense`.
+- **13 working widgets**, registry-driven: notes, tasks, pomodoro, goals, journal, music, ambient sounds, stats, flashcards, analytics, progress, time tracker, quick access. Each is lazy-loaded into its own chunk with `React.lazy` + `Suspense`.
 - **Real direct-manipulation** via custom `useDrag` / `useResize` hooks, with per-widget min/max size constraints and a localStorage layer that migrates older saved layouts on load.
 - **A 985-line Three.js scene**: astronaut POV, tethered spaceship, 18 planets with layered atmospheric glow, pointer-lock mouse-look, WASD flight, and a fullscreen immersive mode.
 - **Performance-minded WebGL**: capped pixel ratio, simplified geometry, shadows off, a trimmed 1,000-star field, and Vite manual chunks splitting `three` from the React vendor bundle.
-- **Astro islands** everywhere — static by default, React only where it needs to be interactive, `nanostores` as the shared state bus between islands.
+- **Astro islands** everywhere: static by default, React only where it needs to be interactive, `nanostores` as the shared state bus between islands.
 
 ## How it works
 
@@ -42,7 +42,7 @@ apps/frontend/src/
 │  │  └─ stores/             nanostores atoms → localStorage
 │  └─ lumenverse/            planetary-scene/  (985-line Three.js explorer)
 └─ layouts/                  Landing · Fullscreen · base
-apps/backend/                FastAPI scaffold — auth + sync, under development
+apps/backend/                FastAPI scaffold, auth + sync, under development
 api/index.py                 Vercel serverless handler (Mangum → FastAPI)
 ```
 
