@@ -20,8 +20,8 @@ const AMBIENCE_SOUNDS: AmbienceSound[] = [
     icon: 'M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z',
     description: 'Gentle rainfall',
     url: '/sounds/rain.mp3',
-    color: 'text-sky-400',
-    gradient: 'from-sky-500 to-blue-600'
+    color: 'text-cognac-400',
+    gradient: 'from-cognac-500 to-cognac-700'
   },
   {
     id: 'cafe',
@@ -47,8 +47,8 @@ const AMBIENCE_SOUNDS: AmbienceSound[] = [
     icon: 'M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5',
     description: 'Ocean waves',
     url: '/sounds/ocean.mp3',
-    color: 'text-cyan-400',
-    gradient: 'from-cyan-500 to-teal-600'
+    color: 'text-cognac-400',
+    gradient: 'from-cognac-600 to-cognac-800'
   },
   {
     id: 'fireplace',
@@ -65,8 +65,8 @@ const AMBIENCE_SOUNDS: AmbienceSound[] = [
     icon: 'M13 10V3L4 14h7v7l9-11h-7z',
     description: 'Distant thunder',
     url: '/sounds/thunder.mp3',
-    color: 'text-purple-400',
-    gradient: 'from-purple-500 to-indigo-600'
+    color: 'text-burgundy-400',
+    gradient: 'from-burgundy-500 to-burgundy-700'
   }
 ]
 
