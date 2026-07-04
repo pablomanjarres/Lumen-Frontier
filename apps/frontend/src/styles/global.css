@@ -4,24 +4,51 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: theme('fontFamily.sans');
+    -webkit-text-size-adjust: 100%;
   }
 
+  /* Dark, warm "Old Money" base — deep forest/burgundy night + ivory text. */
   body {
-    @apply bg-slate-50 text-slate-900;
+    background-color: theme('colors.surface.base');
+    color: theme('colors.ivory.100');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Display headings default to the elegant serif. Override with `font-sans`
+     for small UI labels that should stay in Inter. */
+  h1,
+  h2 {
+    font-family: theme('fontFamily.serif');
   }
 }
 
 @layer components {
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  /* ── Three semantic text roles — retire the /40../90 alpha soup ──
+     Use these instead of text-white/60, text-ivory-200/70, etc.
+     A warm token utility (e.g. text-brass-400) still overrides them. */
+  .text-primary {
+    color: theme('colors.ivory.100');
   }
 
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700;
+  .text-secondary {
+    color: theme('colors.ivory.400');
   }
 
-  .btn-secondary {
-    @apply bg-slate-200 text-slate-900 hover:bg-slate-300;
+  .text-tertiary {
+    color: theme('colors.ivory.600');
+  }
+}
+
+/* Respect reduced-motion everywhere Layout/global.css is used. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

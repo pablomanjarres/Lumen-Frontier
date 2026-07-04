@@ -13,6 +13,63 @@ interface PlanetConfig {
   z: number
 }
 
+// ── Inline line icons (retire emoji-as-icons) ──
+type IconProps = { className?: string }
+
+const LinkIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+    <path d="M15 7h2a5 5 0 0 1 0 10h-2" />
+    <line x1="8" y1="12" x2="16" y2="12" />
+  </svg>
+)
+
+const TargetIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="8" />
+    <circle cx="12" cy="12" r="3" />
+    <line x1="12" y1="2" x2="12" y2="5" />
+    <line x1="12" y1="19" x2="12" y2="22" />
+    <line x1="2" y1="12" x2="5" y2="12" />
+    <line x1="19" y1="12" x2="22" y2="12" />
+  </svg>
+)
+
+const ImmersiveIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 8V6a2 2 0 0 1 2-2h2" />
+    <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+    <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
+    <path d="M8 20H6a2 2 0 0 1-2-2v-2" />
+  </svg>
+)
+
+const MaximizeIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4 9V5a1 1 0 0 1 1-1h4" />
+    <path d="M20 9V5a1 1 0 0 0-1-1h-4" />
+    <path d="M4 15v4a1 1 0 0 0 1 1h4" />
+    <path d="M20 15v4a1 1 0 0 1-1 1h-4" />
+  </svg>
+)
+
+const MinimizeIcon = ({ className }: IconProps) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 5v3a1 1 0 0 1-1 1H5" />
+    <path d="M15 5v3a1 1 0 0 0 1 1h3" />
+    <path d="M9 19v-3a1 1 0 0 0-1-1H5" />
+    <path d="M15 19v-3a1 1 0 0 1 1-1h3" />
+  </svg>
+)
+
+const CONTROL_KEYS: { k: string; label: string }[] = [
+  { k: 'WASD', label: 'Move' },
+  { k: 'Mouse', label: 'Look' },
+  { k: 'Space', label: 'Ascend' },
+  { k: 'Shift', label: 'Descend' },
+  { k: 'Esc', label: 'Exit' },
+]
+
 export default function PlanetaryScene() {
   const mountRef = useRef<HTMLDivElement>(null)
   const [targetPlanet, setTargetPlanet] = useState<string | null>(null)
@@ -26,7 +83,7 @@ export default function PlanetaryScene() {
 
     // Scene setup
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0x0a0e27)
+    scene.background = new THREE.Color(0x1a1413)
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
@@ -755,227 +812,100 @@ export default function PlanetaryScene() {
   }
 
   return (
-    <section className="relative w-full h-full bg-gradient-to-b from-slate-900 to-black overflow-hidden">
-      <div className="w-full h-full">
-        {/* 3D Scene */}
-        <div className="relative w-full h-full">
-          {isLoading && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
-              <div className="text-center">
-                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-white font-semibold">Loading Space Scene...</p>
-                <p className="text-slate-400 text-sm mt-2">Preparing your journey through knowledge</p>
-              </div>
-            </div>
-          )}
-          <div ref={mountRef} className="w-full h-full planetary-scene-bg" />
+    <section className="relative w-full h-full overflow-hidden bg-surface-base">
+      {/* 3D scene canvas mount */}
+      <div ref={mountRef} className="absolute inset-0 planetary-scene-bg" />
 
-          {/* Fullscreen Button - Always visible */}
-          <button
-            onClick={toggleFullscreen}
-            className="absolute top-4 right-4 z-20 px-4 py-2 bg-slate-800/80 hover:bg-slate-700/80 backdrop-blur-sm rounded-lg border border-slate-600 transition-all duration-300 group"
-            title={isFullscreen ? "Exit Fullscreen (F11)" : "Enter Fullscreen (F11)"}
-          >
-            <div className="flex items-center gap-2">
-              {isFullscreen ? (
-                <>
-                  <svg className="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                  <span className="text-slate-300 group-hover:text-white font-semibold text-sm transition-colors">Exit Fullscreen</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                  </svg>
-                  <span className="text-slate-300 group-hover:text-white font-semibold text-sm transition-colors">Fullscreen</span>
-                </>
-              )}
-            </div>
-          </button>
-
-          {/* Flight Mode UI */}
-          {isFlying && (
-            <>
-              {/* Crosshair */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <div className="relative">
-                  <div className="w-8 h-8 border-2 border-white/50 rounded-full" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-white/80 rounded-full" />
-                  <div className="absolute top-1/2 left-0 w-3 h-0.5 bg-white/50 -translate-y-1/2 -translate-x-full" />
-                  <div className="absolute top-1/2 right-0 w-3 h-0.5 bg-white/50 -translate-y-1/2 translate-x-full" />
-                  <div className="absolute left-1/2 top-0 w-0.5 h-3 bg-white/50 -translate-x-1/2 -translate-y-full" />
-                  <div className="absolute left-1/2 bottom-0 w-0.5 h-3 bg-white/50 -translate-x-1/2 translate-y-full" />
-                </div>
-              </div>
-
-              {/* Status */}
-              <div className="absolute top-4 left-4 space-y-2">
-                <div className="px-4 py-2 bg-green-500/20 backdrop-blur-sm rounded-lg border border-green-500/50">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-green-300 font-semibold text-sm">👨‍🚀 ASTRONAUT FLIGHT MODE</span>
-                  </div>
-                </div>
-                {isImmersiveMode && (
-                  <div className="px-4 py-2 bg-purple-500/20 backdrop-blur-sm rounded-lg border border-purple-500/50">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                      <span className="text-purple-300 font-semibold text-sm">IMMERSIVE MODE</span>
-                    </div>
-                  </div>
-                )}
-                <div className="px-4 py-2 bg-orange-500/20 backdrop-blur-sm rounded-lg border border-orange-500/50">
-                  <div className="flex items-center gap-2">
-                    <span className="text-orange-300 font-semibold text-xs">🔗 TETHERED TO SHIP</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Target Planet */}
-              {targetPlanet && (
-                <div className="absolute top-4 right-4 px-4 py-2 bg-blue-500/20 backdrop-blur-sm rounded-lg border border-blue-500/50 mt-16">
-                  <span className="text-blue-300 font-semibold text-sm">🎯 {targetPlanet}</span>
-                </div>
-              )}
-            </>
-          )}
+      {/* Loading overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 z-40 flex items-center justify-center bg-surface-base/90 backdrop-blur-sm">
+          <div className="text-center">
+            <div className="mx-auto mb-4 h-12 w-12 rounded-full border border-brass-500/25 border-t-brass-500 motion-safe:animate-spin" />
+            <p className="font-serif text-2xl text-primary">Charting the Lumenverse</p>
+            <p className="mt-2 text-sm text-tertiary">Preparing your passage through knowledge</p>
+          </div>
         </div>
+      )}
 
-        {/* Controls */}
-        <div className="mt-8 text-center space-y-4">
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-slate-400 text-sm">
-              👨‍🚀 You're an <strong className="text-white">astronaut</strong> connected to your support ship by a tether cable
-            </p>
-            <p className="text-slate-400 text-sm">
-              🎮 Click the <strong className="text-white">Fullscreen</strong> button, then click the scene to enter <strong className="text-white">Flight Mode</strong>
-            </p>
-            <p className="text-purple-400 text-xs">
-              ⚡ Pro tip: Use fullscreen + flight mode for the best <strong className="text-purple-300">immersive astronaut experience</strong>
-            </p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-3 text-xs">
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">WASD</kbd>
-              <span className="ml-2 text-slate-400">Move</span>
-            </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">Mouse</kbd>
-              <span className="ml-2 text-slate-400">Look</span>
-            </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">Space</kbd>
-              <span className="ml-2 text-slate-400">Up</span>
-            </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">Shift</kbd>
-              <span className="ml-2 text-slate-400">Down</span>
-            </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">ESC</kbd>
-              <span className="ml-2 text-slate-400">Exit Flight</span>
-            </div>
-            <div className="px-3 py-2 bg-slate-800/50 rounded-lg border border-slate-700">
-              <kbd className="px-2 py-1 bg-slate-700 rounded text-white font-mono text-xs">F11</kbd>
-              <span className="ml-2 text-slate-400">Fullscreen</span>
+      {/* Fullscreen toggle */}
+      <button
+        onClick={toggleFullscreen}
+        className="group absolute right-4 top-4 z-30 inline-flex items-center gap-2 rounded-control border border-hairline bg-surface-overlay/80 px-4 py-2 shadow-soft-sm backdrop-blur-sm transition-colors hover:border-brass-700/60 hover:bg-surface-overlay focus-visible:shadow-focus focus-visible:outline-none"
+        title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+        aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+      >
+        {isFullscreen ? (
+          <MinimizeIcon className="h-4 w-4 text-secondary transition-colors group-hover:text-primary" />
+        ) : (
+          <MaximizeIcon className="h-4 w-4 text-secondary transition-colors group-hover:text-primary" />
+        )}
+        <span className="text-sm font-medium text-secondary transition-colors group-hover:text-primary">
+          {isFullscreen ? 'Exit' : 'Fullscreen'}
+        </span>
+      </button>
+
+      {/* Flight-mode HUD */}
+      {isFlying && (
+        <>
+          {/* Crosshair reticle */}
+          <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+            <div className="relative">
+              <div className="h-8 w-8 rounded-full border border-brass-400/60" />
+              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brass-400" />
+              <div className="absolute left-0 top-1/2 h-px w-3 -translate-x-full -translate-y-1/2 bg-ivory-100/40" />
+              <div className="absolute right-0 top-1/2 h-px w-3 -translate-y-1/2 translate-x-full bg-ivory-100/40" />
+              <div className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 -translate-y-full bg-ivory-100/40" />
+              <div className="absolute bottom-0 left-1/2 h-3 w-px -translate-x-1/2 translate-y-full bg-ivory-100/40" />
             </div>
           </div>
-          <p className="text-slate-500 text-xs italic">
-            💡 Immersive mode automatically prevents key conflicts with browser shortcuts when flying
+
+          {/* Flight status */}
+          <div className="pointer-events-none absolute left-4 top-20 z-20">
+            <div className="space-y-2 rounded-card border border-hairline bg-surface-overlay/85 px-4 py-3 shadow-soft backdrop-blur-sm">
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-brass-400 motion-safe:animate-pulse" />
+                <span className="text-xs font-medium uppercase tracking-wider text-primary">Flight mode</span>
+              </div>
+              {isImmersiveMode && (
+                <div className="flex items-center gap-2 text-secondary">
+                  <ImmersiveIcon className="h-4 w-4" />
+                  <span className="text-xs tracking-wide">Immersive</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-tertiary">
+                <LinkIcon className="h-4 w-4" />
+                <span className="text-xs tracking-wide">Tethered to ship</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Target readout */}
+          {targetPlanet && (
+            <div className="pointer-events-none absolute right-4 top-20 z-20">
+              <div className="inline-flex items-center gap-2 rounded-card border border-brass-500/30 bg-surface-overlay/85 px-4 py-2 shadow-soft backdrop-blur-sm">
+                <TargetIcon className="h-4 w-4 text-brass-400" />
+                <span className="text-sm tracking-wide text-brass-300">{targetPlanet}</span>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Controls reference — in-scene, always reachable */}
+      <div className="pointer-events-none absolute inset-x-4 bottom-8 z-20 flex justify-center">
+        <div className="w-full max-w-xl rounded-card border border-hairline bg-surface-overlay/80 px-6 py-4 text-center shadow-soft backdrop-blur-md">
+          <p className="mb-3 text-sm text-secondary">
+            <span className="font-medium text-primary">Click the scene</span> to enter flight, then aim at a planet to travel.
           </p>
-        </div>
-
-        {/* Planet Grid */}
-        <div className="mt-16">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-white mb-3">
-              🌍 Available <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Knowledge Planets</span>
-            </h3>
-            <p className="text-slate-400">Explore 18 different fields of study in our interactive universe</p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {[
-              { name: 'Mathematics', color: 'from-blue-500 to-blue-600', icon: '∑', shadow: 'shadow-blue-500/50' },
-              { name: 'Physics', color: 'from-purple-500 to-purple-600', icon: '⚛️', shadow: 'shadow-purple-500/50' },
-              { name: 'Chemistry', color: 'from-pink-500 to-pink-600', icon: '🧪', shadow: 'shadow-pink-500/50' },
-              { name: 'Biology', color: 'from-green-500 to-green-600', icon: '🧬', shadow: 'shadow-green-500/50' },
-              { name: 'History', color: 'from-amber-500 to-amber-600', icon: '📜', shadow: 'shadow-amber-500/50' },
-              { name: 'Literature', color: 'from-red-500 to-red-600', icon: '📚', shadow: 'shadow-red-500/50' },
-              { name: 'Computer Science', color: 'from-cyan-500 to-cyan-600', icon: '💻', shadow: 'shadow-cyan-500/50' },
-              { name: 'Philosophy', color: 'from-lime-500 to-lime-600', icon: '🤔', shadow: 'shadow-lime-500/50' },
-              { name: 'Psychology', color: 'from-indigo-500 to-indigo-600', icon: '🧠', shadow: 'shadow-indigo-500/50' },
-              { name: 'Economics', color: 'from-orange-500 to-orange-600', icon: '📈', shadow: 'shadow-orange-500/50' },
-              { name: 'Art', color: 'from-fuchsia-500 to-fuchsia-600', icon: '🎨', shadow: 'shadow-fuchsia-500/50' },
-              { name: 'Engineering', color: 'from-teal-500 to-teal-600', icon: '⚙️', shadow: 'shadow-teal-500/50' },
-              { name: 'Music', color: 'from-yellow-500 to-yellow-600', icon: '🎵', shadow: 'shadow-yellow-500/50' },
-              { name: 'Astronomy', color: 'from-violet-500 to-violet-600', icon: '🔭', shadow: 'shadow-violet-500/50' },
-              { name: 'Geography', color: 'from-sky-500 to-sky-600', icon: '🗺️', shadow: 'shadow-sky-500/50' },
-              { name: 'Language', color: 'from-rose-500 to-rose-600', icon: '🗣️', shadow: 'shadow-rose-500/50' },
-              { name: 'Sociology', color: 'from-emerald-500 to-emerald-600', icon: '👥', shadow: 'shadow-emerald-500/50' },
-              { name: 'Anthropology', color: 'from-yellow-600 to-amber-600', icon: '🏛️', shadow: 'shadow-amber-500/50' },
-            ].map((topic, index) => (
-              <div 
-                key={index} 
-                className={`group relative p-5 rounded-2xl bg-gradient-to-br ${topic.color} text-white shadow-xl ${topic.shadow} hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden`}
-              >
-                {/* Animated background effect */}
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300" />
-                
-                {/* Shine effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                </div>
-                
-                {/* Content */}
-                <div className="relative z-10 flex flex-col items-center text-center space-y-2">
-                  <div className="text-3xl group-hover:scale-110 transition-transform duration-300">
-                    {topic.icon}
-                  </div>
-                  <h4 className="font-bold text-sm leading-tight">
-                    {topic.name}
-                  </h4>
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </div>
-                </div>
-                
-                {/* Pulse ring on hover */}
-                <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
-              </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            {CONTROL_KEYS.map(({ k, label }) => (
+              <span key={k} className="inline-flex items-center gap-2">
+                <kbd className="rounded-control border border-hairline bg-surface-sunken px-2 py-1 font-mono text-xs text-secondary">
+                  {k}
+                </kbd>
+                <span className="text-xs text-tertiary">{label}</span>
+              </span>
             ))}
-          </div>
-          
-          {/* Bottom decorative text */}
-          <div className="mt-8 text-center">
-            <p className="text-slate-500 text-sm">
-              ✨ <span className="text-slate-400 font-semibold">Hover over a card</span> to see the magic happen!
-            </p>
-          </div>
-        </div>
-
-        {/* Controls Hint - Subtle overlay */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-center">
-          <div className="px-6 py-3 bg-slate-800/60 backdrop-blur-md rounded-xl border border-slate-600/50 shadow-2xl">
-            <p className="text-slate-300 text-sm mb-2">
-              <span className="text-white font-semibold">Click the scene</span> to enter Flight Mode
-            </p>
-            <div className="flex flex-wrap justify-center gap-2 text-xs">
-              <kbd className="px-2 py-1 bg-slate-700/80 rounded text-white font-mono">WASD</kbd>
-              <span className="text-slate-400">Move</span>
-              <span className="text-slate-600">•</span>
-              <kbd className="px-2 py-1 bg-slate-700/80 rounded text-white font-mono">Mouse</kbd>
-              <span className="text-slate-400">Look</span>
-              <span className="text-slate-600">•</span>
-              <kbd className="px-2 py-1 bg-slate-700/80 rounded text-white font-mono">ESC</kbd>
-              <span className="text-slate-400">Exit</span>
-            </div>
           </div>
         </div>
       </div>

@@ -47,20 +47,20 @@ export default function NotesWidget({ config, onUpdate }: WidgetProps) {
       {!isAdding && (
         <button
           onClick={() => setIsAdding(true)}
-          className="w-full p-2.5 bg-gradient-to-r from-brass-900/20 to-cognac-900/20 border-2 border-dashed border-brass-600/40 rounded-lg text-brass-300 font-medium hover:bg-brass-800/30 hover:border-brass-500/60 transition-all backdrop-blur-sm mb-2.5 shadow-lg shadow-brass-950/20"
+          className="w-full p-3 bg-brass-500/10 border border-dashed border-brass-700/50 rounded-card text-brass-300 font-medium hover:bg-brass-500/15 hover:border-brass-600/60 transition-colors mb-3 focus-visible:outline-none focus-visible:shadow-focus"
         >
           + Add New Note
         </button>
       )}
 
       {isAdding && (
-        <div className="mb-2.5 p-2.5 bg-gradient-to-br from-brass-900/20 to-cognac-900/20 rounded-lg border border-brass-700/30 backdrop-blur-sm shadow-lg shadow-brass-950/30">
+        <div className="mb-3 p-3 bg-surface-overlay rounded-card border border-hairline">
           <textarea
             autoFocus
             value={newNoteText}
             onChange={(e) => setNewNoteText(e.target.value)}
             placeholder="Write your note..."
-            className="w-full p-2 bg-cognac-950/30 border border-brass-800/30 rounded resize-none text-ivory-100 placeholder:text-brass-300/30 focus:outline-none focus:ring-2 focus:ring-brass-600/50 focus:border-brass-500/50"
+            className="w-full p-2 bg-surface-sunken border border-hairline rounded-control resize-none text-primary placeholder:text-tertiary focus-visible:outline-none focus-visible:shadow-focus"
             rows={3}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && e.ctrlKey) {
@@ -71,7 +71,7 @@ export default function NotesWidget({ config, onUpdate }: WidgetProps) {
           <div className="flex gap-2 mt-2">
             <button
               onClick={addNote}
-              className="flex-1 px-3 py-1.5 bg-gradient-to-r from-brass-700 to-cognac-700 text-white rounded hover:shadow-lg hover:shadow-brass-600/40 transition-all text-sm font-medium"
+              className="flex-1 px-3 py-2 bg-brass-500 hover:bg-brass-600 text-surface-base rounded-control shadow-soft-sm transition-colors text-sm font-medium focus-visible:outline-none focus-visible:shadow-focus"
             >
               Save
             </button>
@@ -80,18 +80,18 @@ export default function NotesWidget({ config, onUpdate }: WidgetProps) {
                 setIsAdding(false)
                 setNewNoteText('')
               }}
-              className="flex-1 px-3 py-1.5 bg-cognac-950/40 text-ivory-200/80 rounded hover:bg-cognac-900/50 transition-colors text-sm border border-brass-800/30"
+              className="flex-1 px-3 py-2 bg-transparent border border-hairline text-secondary rounded-control hover:text-primary hover:border-brass-700/60 transition-colors text-sm focus-visible:outline-none focus-visible:shadow-focus"
             >
               Cancel
             </button>
           </div>
-          <p className="text-xs text-brass-400/50 mt-1">Ctrl+Enter to save</p>
+          <p className="text-xs text-tertiary mt-1">Ctrl+Enter to save</p>
         </div>
       )}
 
       <div className="flex-1 overflow-y-auto space-y-2">
         {notes.length === 0 ? (
-          <div className="text-center py-8 text-brass-300/40">
+          <div className="text-center py-8 text-tertiary">
             <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
@@ -102,13 +102,13 @@ export default function NotesWidget({ config, onUpdate }: WidgetProps) {
           notes.map((note) => (
             <div
               key={note.id}
-              className="group p-2.5 bg-gradient-to-br from-cognac-950/30 to-burgundy-950/20 border border-brass-800/30 rounded-lg hover:bg-cognac-900/30 hover:shadow-lg hover:shadow-brass-950/50 hover:border-brass-700/50 transition-all backdrop-blur-sm"
+              className="group p-3 bg-surface-overlay border border-hairline rounded-card hover:border-brass-700/50 hover:shadow-soft transition-colors"
             >
               <div className="flex items-start justify-between">
-                <p className="flex-1 text-sm text-ivory-100 whitespace-pre-wrap">{note.text}</p>
+                <p className="flex-1 text-sm text-primary whitespace-pre-wrap">{note.text}</p>
                 <button
                   onClick={() => deleteNote(note.id)}
-                  className="ml-2 p-1 opacity-0 group-hover:opacity-100 text-burgundy-400 hover:bg-burgundy-500/20 rounded transition-all"
+                  className="ml-2 p-1 opacity-0 group-hover:opacity-100 text-burgundy-300 hover:bg-burgundy-500/15 rounded-control transition-colors focus-visible:outline-none focus-visible:shadow-focus"
                   title="Delete note"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +116,7 @@ export default function NotesWidget({ config, onUpdate }: WidgetProps) {
                   </svg>
                 </button>
               </div>
-              <p className="text-xs text-brass-400/40 mt-1">
+              <p className="text-xs text-tertiary mt-1">
                 {new Date(note.createdAt).toLocaleDateString()} {new Date(note.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </p>
             </div>

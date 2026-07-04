@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import type { WidgetProps } from '../../types'
+import { CATEGORY_COLORS } from '../../constants/config'
 import '@/styles/dashboard.css'
 
 interface Goal {
@@ -94,26 +95,6 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
     setGoals(goals.filter(goal => goal.id !== id))
   }
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'daily': return 'from-orange-500 to-red-500'
-      case 'weekly': return 'from-blue-500 to-indigo-500'
-      case 'monthly': return 'from-purple-500 to-pink-500'
-      case 'custom': return 'from-green-500 to-teal-500'
-      default: return 'from-slate-500 to-slate-600'
-    }
-  }
-
-  const getCategoryBadge = (category: string) => {
-    switch (category) {
-      case 'daily': return 'bg-orange-500/20 text-orange-400'
-      case 'weekly': return 'bg-blue-500/20 text-blue-400'
-      case 'monthly': return 'bg-purple-500/20 text-purple-400'
-      case 'custom': return 'bg-green-500/20 text-green-400'
-      default: return 'bg-slate-500/20 text-slate-400'
-    }
-  }
-
   const activeGoals = goals.filter(g => !g.completedAt)
   const completedGoals = goals.filter(g => g.completedAt)
 
@@ -121,13 +102,13 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
     <div className="flex flex-col h-full">
       {/* Header Stats */}
       <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="p-3 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-lg border border-blue-500/20 backdrop-blur-sm">
-          <div className="text-2xl font-bold text-blue-400">{activeGoals.length}</div>
-          <div className="text-xs text-blue-400/70">Active Goals</div>
+        <div className="p-3 bg-brass-500/15 rounded-card border border-brass-500/30">
+          <div className="text-2xl font-serif text-brass-300">{activeGoals.length}</div>
+          <div className="text-xs text-secondary">Active Goals</div>
         </div>
-        <div className="p-3 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-lg border border-green-500/20 backdrop-blur-sm">
-          <div className="text-2xl font-bold text-green-400">{completedGoals.length}</div>
-          <div className="text-xs text-green-400/70">Completed</div>
+        <div className="p-3 bg-forest-500/15 rounded-card border border-forest-500/30">
+          <div className="text-2xl font-serif text-forest-300">{completedGoals.length}</div>
+          <div className="text-xs text-secondary">Completed</div>
         </div>
       </div>
 
@@ -135,7 +116,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
       {!isAdding && (
         <button
           onClick={() => setIsAdding(true)}
-          className="w-full p-3 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-2 border-dashed border-blue-500/30 rounded-lg text-blue-400 font-medium hover:bg-blue-500/20 hover:border-blue-500/50 transition-all backdrop-blur-sm mb-3"
+          className="w-full p-3 bg-brass-500/10 border border-dashed border-brass-700/50 rounded-card text-brass-300 font-medium hover:bg-brass-500/15 hover:border-brass-600/60 transition-colors mb-3 focus-visible:outline-none focus-visible:shadow-focus"
         >
           + Set New Goal
         </button>
@@ -143,14 +124,14 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
 
       {/* Add Goal Form */}
       {isAdding && (
-        <div className="mb-3 p-4 bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+        <div className="mb-3 p-4 bg-surface-overlay rounded-card border border-hairline">
           <input
             type="text"
             value={newGoal.title}
             onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })}
             placeholder="Goal title..."
             aria-label="Goal title"
-            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg mb-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="w-full px-3 py-2 bg-surface-sunken border border-hairline rounded-control mb-2 text-sm text-primary placeholder:text-tertiary focus-visible:outline-none focus-visible:shadow-focus"
             autoFocus
           />
           <textarea
@@ -158,7 +139,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
             onChange={(e) => setNewGoal({ ...newGoal, description: e.target.value })}
             placeholder="Description (optional)..."
             aria-label="Goal description"
-            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg mb-2 text-sm text-white placeholder:text-white/30 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="w-full px-3 py-2 bg-surface-sunken border border-hairline rounded-control mb-2 text-sm text-primary placeholder:text-tertiary resize-none focus-visible:outline-none focus-visible:shadow-focus"
             rows={2}
           />
           <div className="grid grid-cols-3 gap-2 mb-3">
@@ -167,7 +148,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
               value={newGoal.target}
               onChange={(e) => setNewGoal({ ...newGoal, target: parseInt(e.target.value) || 0 })}
               aria-label="Target value"
-              className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="px-3 py-2 bg-surface-sunken border border-hairline rounded-control text-sm text-primary focus-visible:outline-none focus-visible:shadow-focus"
               min="1"
             />
             <input
@@ -176,7 +157,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
               onChange={(e) => setNewGoal({ ...newGoal, unit: e.target.value })}
               placeholder="hours"
               aria-label="Unit of measurement"
-              className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="px-3 py-2 bg-surface-sunken border border-hairline rounded-control text-sm text-primary placeholder:text-tertiary focus-visible:outline-none focus-visible:shadow-focus"
             />
             <select
               value={newGoal.category}
@@ -187,24 +168,24 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
                 }
               }}
               aria-label="Goal category"
-              className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+              className="px-3 py-2 bg-surface-sunken border border-hairline rounded-control text-sm text-primary focus-visible:outline-none focus-visible:shadow-focus"
             >
-              <option value="daily" className="bg-gray-800">Daily</option>
-              <option value="weekly" className="bg-gray-800">Weekly</option>
-              <option value="monthly" className="bg-gray-800">Monthly</option>
-              <option value="custom" className="bg-gray-800">Custom</option>
+              <option value="daily" className="bg-surface-overlay text-primary">Daily</option>
+              <option value="weekly" className="bg-surface-overlay text-primary">Weekly</option>
+              <option value="monthly" className="bg-surface-overlay text-primary">Monthly</option>
+              <option value="custom" className="bg-surface-overlay text-primary">Custom</option>
             </select>
           </div>
           <div className="flex gap-2">
             <button
               onClick={addGoal}
-              className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all text-sm font-medium"
+              className="flex-1 px-3 py-2 bg-brass-500 hover:bg-brass-600 text-surface-base rounded-control shadow-soft-sm transition-colors text-sm font-medium focus-visible:outline-none focus-visible:shadow-focus"
             >
               Add Goal
             </button>
             <button
               onClick={() => setIsAdding(false)}
-              className="flex-1 px-3 py-2 bg-white/10 text-white/80 rounded-lg hover:bg-white/20 transition-colors text-sm border border-white/10"
+              className="flex-1 px-3 py-2 bg-transparent border border-hairline text-secondary rounded-control hover:text-primary hover:border-brass-700/60 transition-colors text-sm focus-visible:outline-none focus-visible:shadow-focus"
             >
               Cancel
             </button>
@@ -215,7 +196,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
       {/* Goals List */}
       <div className="flex-1 overflow-y-auto space-y-3">
         {goals.length === 0 ? (
-          <div className="text-center py-8 text-white/40">
+          <div className="text-center py-8 text-tertiary">
             <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
               </svg>
@@ -226,33 +207,34 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
           goals.map((goal) => {
             const progress = (goal.current / goal.target) * 100
             const isCompleted = goal.completedAt !== undefined
+            const cat = CATEGORY_COLORS[goal.category]
 
             return (
               <div
                 key={goal.id}
-                className={`group p-4 rounded-xl border transition-all backdrop-blur-sm ${
+                className={`group p-4 rounded-card border transition-colors ${
                   isCompleted
-                    ? 'bg-gradient-to-br from-green-500/10 to-emerald-500/10 border-green-500/20'
-                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:shadow-lg'
+                    ? 'bg-forest-500/10 border-forest-500/30'
+                    : 'bg-surface-overlay border-hairline hover:shadow-soft'
                 }`}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
-                    <h4 className={`font-semibold text-sm ${isCompleted ? 'text-green-400' : 'text-white'}`}>
+                    <h4 className={`font-semibold text-sm ${isCompleted ? 'text-forest-300' : 'text-primary'}`}>
                       {goal.title}
                       {isCompleted && (
-                        <svg className="inline w-4 h-4 ml-1 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="inline w-4 h-4 ml-1 text-forest-400" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                         </svg>
                       )}
                     </h4>
                     {goal.description && (
-                      <p className="text-xs text-white/50 mt-0.5">{goal.description}</p>
+                      <p className="text-xs text-tertiary mt-1">{goal.description}</p>
                     )}
                   </div>
                   <button
                     onClick={() => deleteGoal(goal.id)}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-red-400 hover:bg-red-500/20 rounded transition-all"
+                    className="opacity-0 group-hover:opacity-100 p-1 text-burgundy-300 hover:bg-burgundy-500/15 rounded-control transition-colors focus-visible:outline-none focus-visible:shadow-focus"
                     title="Delete goal"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,22 +243,22 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
                   </button>
                 </div>
 
-                <span className={`inline-block text-xs px-2 py-1 rounded-full font-medium mb-2 ${getCategoryBadge(goal.category)}`}>
+                <span className={`inline-block text-xs px-2 py-1 rounded-control border border-hairline font-medium mb-2 ${cat.bg} ${cat.text}`}>
                   {goal.category}
                 </span>
 
                 {/* Progress Bar */}
                 <div className="mb-2">
-                  <div className="flex justify-between text-xs text-white/60 mb-1">
+                  <div className="flex justify-between text-xs text-secondary mb-1">
                     <span>{goal.current} / {goal.target} {goal.unit}</span>
                     <span className="font-medium">{Math.round(progress)}%</span>
                   </div>
-                  <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-2 bg-surface-sunken rounded-full overflow-hidden">
                     <div
                       ref={(el) => {
                         if (el) progressBarRefs.current.set(goal.id, el)
                       }}
-                      className={`goal-progress-bar h-full bg-gradient-to-r ${getCategoryColor(goal.category)}`}
+                      className={`goal-progress-bar h-full bg-gradient-to-r ${cat.progress}`}
                       data-progress={Math.min(progress, 100)}
                     />
                   </div>
@@ -287,21 +269,21 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
                   <div className="flex gap-2">
                     <button
                       onClick={() => updateProgress(goal.id, -1)}
-                      className="flex-1 py-1.5 bg-white/10 text-white/60 rounded-lg text-xs font-medium hover:bg-white/20 hover:text-white/90 transition-colors border border-white/10"
+                      className="flex-1 py-2 bg-transparent border border-hairline text-secondary rounded-control text-xs font-medium hover:text-primary hover:border-brass-700/60 transition-colors focus-visible:outline-none focus-visible:shadow-focus disabled:opacity-50"
                       disabled={goal.current === 0}
                     >
                       -1
                     </button>
                     <button
                       onClick={() => updateProgress(goal.id, 1)}
-                      className="flex-1 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+                      className="flex-1 py-2 bg-brass-500 hover:bg-brass-600 text-surface-base rounded-control text-xs font-medium shadow-soft-sm transition-colors focus-visible:outline-none focus-visible:shadow-focus disabled:opacity-50"
                       disabled={goal.current >= goal.target}
                     >
                       +1
                     </button>
                     <button
                       onClick={() => updateProgress(goal.id, 5)}
-                      className="flex-1 py-1.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg text-xs font-medium hover:shadow-lg hover:shadow-green-500/30 transition-all"
+                      className="flex-1 py-2 bg-forest-600 hover:bg-forest-700 text-ivory-100 rounded-control text-xs font-medium shadow-soft-sm transition-colors focus-visible:outline-none focus-visible:shadow-focus disabled:opacity-50"
                       disabled={goal.current >= goal.target}
                     >
                       +5
@@ -310,7 +292,7 @@ export default function GoalsWidget({ config, onUpdate }: WidgetProps) {
                 )}
 
                 {isCompleted && goal.completedAt && (
-                  <div className="text-xs text-green-400 font-medium text-center py-1">
+                  <div className="text-xs text-forest-300 font-medium text-center py-1">
                     Completed {new Date(goal.completedAt).toLocaleDateString()}
                   </div>
                 )}

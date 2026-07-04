@@ -10,7 +10,7 @@ const SAMPLE_FLASHCARDS = [
     category: 'Geography'
   },
   {
-    id: '2', 
+    id: '2',
     question: 'What is 2 + 2?',
     answer: '4',
     category: 'Math'
@@ -64,14 +64,14 @@ export default function FlashcardsWidget({ config }: WidgetProps) {
   return (
     <div className="flex flex-col h-full">
       <div className="mb-4">
-        <div className="flex justify-between text-xs text-slate-600 mb-1">
+        <div className="flex justify-between text-xs text-secondary mb-1">
           <span>Progress</span>
           <span>{studiedCount} / {flashcards.length} cards</span>
         </div>
-        <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-surface-sunken rounded-full overflow-hidden">
           <div
             ref={progressBarRef}
-            className="progress-bar h-full bg-gradient-to-r from-purple-400 to-indigo-600 transition-all duration-300"
+            className="progress-bar h-full bg-brass-500 transition-all duration-300"
           />
         </div>
       </div>
@@ -86,24 +86,24 @@ export default function FlashcardsWidget({ config }: WidgetProps) {
               isFlipped ? 'rotate-y-180' : ''
             }`}
           >
-            <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-xl p-6 flex flex-col items-center justify-center shadow-lg">
-              <div className="text-xs font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full mb-4">
+            <div className="absolute w-full h-full backface-hidden bg-surface-overlay border border-hairline rounded-card p-6 flex flex-col items-center justify-center shadow-soft">
+              <div className="text-xs font-medium text-brass-300 bg-brass-500/15 border border-brass-500/30 px-3 py-1 rounded-control mb-4">
                 {currentCard.category}
               </div>
-              <p className="text-lg font-medium text-slate-800 text-center">
+              <p className="text-lg font-serif text-primary text-center">
                 {currentCard.question}
               </p>
-              <p className="text-xs text-slate-500 mt-6">Click to reveal answer</p>
+              <p className="text-xs text-tertiary mt-6">Click to reveal answer</p>
             </div>
 
-            <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-indigo-50 to-purple-50 border-2 border-indigo-200 rounded-xl p-6 flex flex-col items-center justify-center shadow-lg">
-              <svg className="w-8 h-8 text-indigo-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-surface-overlay border border-hairline rounded-card p-6 flex flex-col items-center justify-center shadow-soft">
+              <svg className="w-8 h-8 text-forest-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <p className="text-xl font-bold text-indigo-900 text-center">
+              <p className="text-xl font-serif text-primary text-center">
                 {currentCard.answer}
               </p>
-              <p className="text-xs text-slate-500 mt-6">Click to flip back</p>
+              <p className="text-xs text-tertiary mt-6">Click to flip back</p>
             </div>
           </div>
         </div>
@@ -113,22 +113,22 @@ export default function FlashcardsWidget({ config }: WidgetProps) {
         <button
           onClick={handlePrevious}
           disabled={currentIndex === 0}
-          className="p-2 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-colors"
+          className="p-2 bg-transparent border border-hairline text-secondary hover:text-primary hover:border-brass-700/60 disabled:opacity-50 disabled:cursor-not-allowed rounded-control transition-colors focus-visible:outline-none focus-visible:shadow-focus"
           aria-label="Previous flashcard"
           title="Previous card"
         >
-          <svg className="w-5 h-5 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
-        <span className="text-sm text-slate-600 font-medium">
+        <span className="text-sm text-secondary font-medium">
           {currentIndex + 1} / {flashcards.length}
         </span>
 
         <button
           onClick={handleNext}
-          className="p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+          className="p-2 bg-brass-500 hover:bg-brass-600 text-surface-base rounded-control shadow-soft-sm transition-colors focus-visible:outline-none focus-visible:shadow-focus"
           aria-label="Next flashcard"
           title="Next card"
         >
@@ -139,8 +139,8 @@ export default function FlashcardsWidget({ config }: WidgetProps) {
       </div>
 
       {studiedCount === flashcards.length && (
-        <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
-          <p className="text-sm font-medium text-green-800">
+        <div className="mt-3 p-3 bg-forest-500/15 border border-forest-500/30 rounded-card text-center">
+          <p className="text-sm font-medium text-forest-300">
             🎉 You've reviewed all cards!
           </p>
         </div>

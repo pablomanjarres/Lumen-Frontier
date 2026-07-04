@@ -159,14 +159,14 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
   const switchMode = (newMode: PomodoroMode) => {
     // Don't do anything if already in that mode
     if (mode === newMode) return
-    
+
     // If timer is running, always show warning regardless of mode
     if (isRunning) {
       setPendingMode(newMode)
       setShowModeChangeWarning(true)
       return
     }
-    
+
     // If timer is not running, allow free switching
     setMode(newMode)
     setTimeLeft(durations[newMode])
@@ -201,7 +201,7 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
     const hours = Math.floor(seconds / 3600)
     const mins = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
-    
+
     if (hours > 0) {
       return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
     }
@@ -212,7 +212,7 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
     const hours = Math.floor(seconds / 3600)
     const mins = Math.floor((seconds % 3600) / 60)
     const secs = seconds % 60
-    
+
     return {
       hours: hours.toString().padStart(2, '0'),
       minutes: mins.toString().padStart(2, '0'),
@@ -228,26 +228,26 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
       case 'focus':
         return {
           label: 'Focus',
-          color: 'from-burgundy-600 to-cognac-600',
-          bgColor: 'bg-burgundy-900/20',
+          bgColor: 'bg-burgundy-500/15',
           textColor: 'text-burgundy-300',
-          borderColor: 'border-burgundy-700/30'
+          borderColor: 'border-burgundy-500/30',
+          btnFill: 'bg-burgundy-600 hover:bg-burgundy-700 text-ivory-100'
         }
       case 'shortBreak':
         return {
           label: 'Short Break',
-          color: 'from-forest-600 to-forest-500',
-          bgColor: 'bg-forest-900/20',
+          bgColor: 'bg-forest-500/15',
           textColor: 'text-forest-300',
-          borderColor: 'border-forest-700/30'
+          borderColor: 'border-forest-500/30',
+          btnFill: 'bg-forest-600 hover:bg-forest-700 text-ivory-100'
         }
       case 'longBreak':
         return {
           label: 'Long Break',
-          color: 'from-brass-600 to-cognac-500',
-          bgColor: 'bg-brass-900/20',
+          bgColor: 'bg-brass-500/15',
           textColor: 'text-brass-300',
-          borderColor: 'border-brass-700/30'
+          borderColor: 'border-brass-500/30',
+          btnFill: 'bg-brass-500 hover:bg-brass-600 text-surface-base'
         }
     }
   }
@@ -258,19 +258,19 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
     <div className="flex flex-col h-full relative">
       {/* Mode Change Warning Modal */}
       {showModeChangeWarning && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-xl">
-          <div className="bg-gradient-to-br from-cognac-950 to-burgundy-950 border border-burgundy-500/30 rounded-xl p-6 max-w-sm mx-4 shadow-2xl">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 rounded-card">
+          <div className="bg-surface-overlay border border-hairline rounded-card p-6 max-w-sm mx-4 shadow-soft-lg">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-burgundy-500/20 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-burgundy-500/15 rounded-full flex items-center justify-center">
                 <svg className="w-6 h-6 text-burgundy-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold text-ivory-100">
+              <h3 className="text-lg font-bold text-primary">
                 {mode === 'focus' ? 'Study Block in Progress' : 'Break in Progress'}
               </h3>
             </div>
-            <p className="text-ivory-200/70 mb-6">
+            <p className="text-secondary mb-6">
               {mode === 'focus'
                 ? "You haven't finished your current focus session. Are you sure you want to switch modes? Your progress will be lost."
                 : "Your break timer is still running. Switching modes will reset the timer. Are you sure you want to continue?"}
@@ -278,13 +278,13 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
             <div className="flex gap-3">
               <button
                 onClick={cancelModeChange}
-                className="flex-1 px-4 py-2.5 bg-cognac-950/40 text-ivory-100 rounded-lg font-medium hover:bg-cognac-900/50 transition-colors border border-brass-800/30"
+                className="flex-1 px-4 py-2 bg-transparent border border-hairline text-secondary rounded-control font-medium hover:text-primary hover:border-brass-700/60 transition-colors focus-visible:outline-none focus-visible:shadow-focus"
               >
                 {mode === 'focus' ? 'Continue Studying' : 'Continue Break'}
               </button>
               <button
                 onClick={confirmModeChange}
-                className="flex-1 px-4 py-2.5 bg-gradient-to-r from-burgundy-600 to-cognac-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-burgundy-600/30 transition-all"
+                className="flex-1 px-4 py-2 bg-burgundy-600 hover:bg-burgundy-700 text-ivory-100 rounded-control font-medium shadow-soft-sm transition-colors focus-visible:outline-none focus-visible:shadow-focus"
               >
                 Switch Anyway
               </button>
@@ -294,23 +294,23 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
       )}
 
       {/* Mode Tabs */}
-      <div className="flex gap-1 sm:gap-2 mb-3 sm:mb-4 bg-cognac-950/30 p-1 rounded-xl backdrop-blur-sm border border-brass-900/30">
+      <div className="flex gap-1 sm:gap-2 mb-3 sm:mb-4 bg-surface-sunken p-1 rounded-card border border-hairline">
         <button
           onClick={() => switchMode('focus')}
-          className={`flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+          className={`flex-1 py-2 px-2 sm:px-3 rounded-control text-xs sm:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:shadow-focus ${
             mode === 'focus'
-              ? 'bg-gradient-to-r from-burgundy-600 to-cognac-600 text-white shadow-lg shadow-burgundy-600/30'
-              : 'text-ivory-200/60 hover:text-ivory-100/90 hover:bg-cognac-900/30'
+              ? 'bg-burgundy-600 text-ivory-100 shadow-soft-sm'
+              : 'bg-transparent text-secondary hover:text-primary'
           }`}
         >
           Focus
         </button>
         <button
           onClick={() => switchMode('shortBreak')}
-          className={`flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+          className={`flex-1 py-2 px-2 sm:px-3 rounded-control text-xs sm:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:shadow-focus ${
             mode === 'shortBreak'
-              ? 'bg-gradient-to-r from-forest-600 to-forest-500 text-white shadow-lg shadow-forest-600/30'
-              : 'text-ivory-200/60 hover:text-ivory-100/90 hover:bg-cognac-900/30'
+              ? 'bg-forest-600 text-ivory-100 shadow-soft-sm'
+              : 'bg-transparent text-secondary hover:text-primary'
           }`}
         >
           <span className="hidden sm:inline">Short Break</span>
@@ -318,10 +318,10 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
         </button>
         <button
           onClick={() => switchMode('longBreak')}
-          className={`flex-1 py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+          className={`flex-1 py-2 px-2 sm:px-3 rounded-control text-xs sm:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:shadow-focus ${
             mode === 'longBreak'
-              ? 'bg-gradient-to-r from-brass-600 to-cognac-500 text-white shadow-lg shadow-brass-600/30'
-              : 'text-ivory-200/60 hover:text-ivory-100/90 hover:bg-cognac-900/30'
+              ? 'bg-brass-500 text-surface-base shadow-soft-sm'
+              : 'bg-transparent text-secondary hover:text-primary'
           }`}
         >
           <span className="hidden sm:inline">Long Break</span>
@@ -341,12 +341,12 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
               onKeyDown={(e) => e.key === 'Enter' && saveFocusTitle()}
               placeholder="click to add focus title"
               autoFocus
-              className="w-full bg-cognac-950/30 text-ivory-100/80 text-sm px-3 py-2 rounded-lg border border-brass-800/30 focus:outline-none focus:border-burgundy-500/50 placeholder:text-brass-300/30"
+              className="w-full bg-surface-sunken text-primary text-sm px-3 py-2 rounded-control border border-hairline focus-visible:outline-none focus-visible:shadow-focus placeholder:text-tertiary"
             />
           ) : (
             <div
               onClick={() => setIsEditingTitle(true)}
-              className="w-full text-ivory-200/60 text-sm px-3 py-2 rounded-lg cursor-text hover:bg-cognac-950/20 transition-colors"
+              className="w-full text-secondary text-sm px-3 py-2 rounded-control cursor-text hover:bg-surface-overlay transition-colors"
             >
               {focusTitle || 'click to add focus title'}
             </div>
@@ -359,30 +359,30 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
         {/* Big Time Display - responsive sizing */}
         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
           <div className="text-center">
-            <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-brass-200 tracking-tight">
+            <div className="text-5xl sm:text-6xl lg:text-7xl font-mono font-bold text-brass-200 tracking-tight">
               {timeUnits.hours !== '00' ? timeUnits.hours : timeUnits.minutes}
             </div>
-            <div className="text-xs text-brass-400/50 mt-1 font-medium uppercase tracking-wider">
+            <div className="text-xs text-tertiary mt-1 font-medium uppercase tracking-wider">
               {timeUnits.hours !== '00' ? 'HR' : 'MIN'}
             </div>
           </div>
-          <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brass-300/30">:</div>
+          <div className="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold text-tertiary">:</div>
           <div className="text-center">
-            <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-brass-200 tracking-tight">
+            <div className="text-5xl sm:text-6xl lg:text-7xl font-mono font-bold text-brass-200 tracking-tight">
               {timeUnits.hours !== '00' ? timeUnits.minutes : timeUnits.seconds}
             </div>
-            <div className="text-xs text-brass-400/50 mt-1 font-medium uppercase tracking-wider">
+            <div className="text-xs text-tertiary mt-1 font-medium uppercase tracking-wider">
               {timeUnits.hours !== '00' ? 'MIN' : 'SEC'}
             </div>
           </div>
           {timeUnits.hours !== '00' && (
             <>
-              <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brass-300/30">:</div>
+              <div className="text-4xl sm:text-5xl lg:text-6xl font-mono font-bold text-tertiary">:</div>
               <div className="text-center">
-                <div className="text-5xl sm:text-6xl lg:text-7xl font-bold text-brass-200 tracking-tight">
+                <div className="text-5xl sm:text-6xl lg:text-7xl font-mono font-bold text-brass-200 tracking-tight">
                   {timeUnits.seconds}
                 </div>
-                <div className="text-xs text-brass-400/50 mt-1 font-medium uppercase tracking-wider">
+                <div className="text-xs text-tertiary mt-1 font-medium uppercase tracking-wider">
                   SEC
                 </div>
               </div>
@@ -391,7 +391,7 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
         </div>
 
         {/* Mode Indicator */}
-        <div className={`px-4 py-2 rounded-full ${modeConfig.bgColor} border ${modeConfig.borderColor} backdrop-blur-sm`}>
+        <div className={`px-4 py-2 rounded-control ${modeConfig.bgColor} border ${modeConfig.borderColor}`}>
           <span className={`text-sm font-medium ${modeConfig.textColor}`}>
             Mode: {modeConfig.label}
           </span>
@@ -401,10 +401,10 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
       {/* Start Timer Button */}
       <button
         onClick={toggleTimer}
-        className={`w-full py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base text-white transition-all shadow-lg mb-2 ${
+        className={`w-full py-3 rounded-control font-semibold text-sm sm:text-base transition-colors shadow-soft mb-2 focus-visible:outline-none focus-visible:shadow-focus ${
           isRunning
-            ? 'bg-gradient-to-r from-cognac-600 to-brass-600 hover:shadow-brass-600/50'
-            : `bg-gradient-to-r ${modeConfig.color} hover:shadow-xl`
+            ? 'bg-cognac-600 hover:bg-cognac-700 text-ivory-100'
+            : modeConfig.btnFill
         }`}
       >
         {isRunning ? 'Pause Timer' : 'Start Timer'}
@@ -412,20 +412,20 @@ export default function PomodoroWidget({ config, onUpdate }: WidgetProps) {
 
       {/* Additional Info - hide on small sizes */}
       <div className="text-center hidden sm:block">
-        <p className="text-xs text-brass-400/40">
+        <p className="text-xs text-tertiary">
           Not into pomodoros? Try our stopwatch/time-tracker with Track
         </p>
       </div>
 
       {/* Stats at bottom */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-brass-800/30">
-        <div className="text-center p-1.5 sm:p-2 bg-burgundy-950/30 rounded-lg backdrop-blur-sm border border-burgundy-800/20">
-          <div className="text-lg sm:text-xl font-bold text-burgundy-300">{data.completedPomodoros}</div>
-          <div className="text-xs text-brass-400/50 mt-0.5 sm:mt-1">Completed</div>
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-hairline">
+        <div className="text-center p-2 bg-surface-overlay rounded-card border border-hairline">
+          <div className="text-lg sm:text-xl font-serif text-burgundy-300">{data.completedPomodoros}</div>
+          <div className="text-xs text-tertiary mt-1">Completed</div>
         </div>
-        <div className="text-center p-1.5 sm:p-2 bg-brass-950/30 rounded-lg backdrop-blur-sm border border-brass-800/20">
-          <div className="text-lg sm:text-xl font-bold text-brass-300">{Math.floor(data.totalWorkTime / 60)}h {data.totalWorkTime % 60}m</div>
-          <div className="text-xs text-brass-400/50 mt-0.5 sm:mt-1">Total Time</div>
+        <div className="text-center p-2 bg-surface-overlay rounded-card border border-hairline">
+          <div className="text-lg sm:text-xl font-serif text-brass-300">{Math.floor(data.totalWorkTime / 60)}h {data.totalWorkTime % 60}m</div>
+          <div className="text-xs text-tertiary mt-1">Total Time</div>
         </div>
       </div>
     </div>
