@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import type { WidgetProps} from '../../types'
+import { PRIORITY_COLORS } from '../../constants/config'
 
 interface Task {
   id: string
@@ -54,24 +55,6 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
     setTasks(tasks.filter(task => task.id !== id))
   }
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'border-red-500 bg-red-50'
-      case 'medium': return 'border-yellow-500 bg-yellow-50'
-      case 'low': return 'border-green-500 bg-green-50'
-      default: return 'border-slate-300 bg-white'
-    }
-  }
-
-  const getPriorityBadge = (priority: string) => {
-    switch (priority) {
-      case 'high': return 'bg-red-100 text-red-700'
-      case 'medium': return 'bg-yellow-100 text-yellow-700'
-      case 'low': return 'bg-green-100 text-green-700'
-      default: return 'bg-slate-100 text-slate-700'
-    }
-  }
-
   const filteredTasks = tasks.filter(task => {
     if (filter === 'active') return !task.completed
     if (filter === 'completed') return task.completed
@@ -88,17 +71,17 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
     <div className="flex flex-col h-full">
       {/* Stats Bar */}
       <div className="grid grid-cols-3 gap-2 mb-4">
-        <div className="text-center p-2 bg-white/5 rounded-lg backdrop-blur-sm border border-white/10">
-          <div className="text-lg font-bold text-white">{stats.total}</div>
-          <div className="text-xs text-white/50">Total</div>
+        <div className="text-center p-3 bg-surface-overlay rounded-card border border-hairline">
+          <div className="text-lg font-serif text-primary">{stats.total}</div>
+          <div className="text-xs text-secondary">Total</div>
         </div>
-        <div className="text-center p-2 bg-blue-500/10 rounded-lg backdrop-blur-sm border border-blue-500/20">
-          <div className="text-lg font-bold text-blue-400">{stats.active}</div>
-          <div className="text-xs text-blue-400/70">Active</div>
+        <div className="text-center p-3 bg-brass-500/15 rounded-card border border-brass-500/30">
+          <div className="text-lg font-serif text-brass-300">{stats.active}</div>
+          <div className="text-xs text-secondary">Active</div>
         </div>
-        <div className="text-center p-2 bg-green-500/10 rounded-lg backdrop-blur-sm border border-green-500/20">
-          <div className="text-lg font-bold text-green-400">{stats.completed}</div>
-          <div className="text-xs text-green-400/70">Done</div>
+        <div className="text-center p-3 bg-forest-500/15 rounded-card border border-forest-500/30">
+          <div className="text-lg font-serif text-forest-300">{stats.completed}</div>
+          <div className="text-xs text-secondary">Done</div>
         </div>
       </div>
 
@@ -108,10 +91,10 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-medium transition-all ${
+            className={`flex-1 py-2 px-3 rounded-control text-xs font-medium transition-colors focus-visible:outline-none focus-visible:shadow-focus ${
               filter === f
-                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
-                : 'bg-white/5 text-white/60 hover:text-white/90 hover:bg-white/10 border border-white/10'
+                ? 'bg-brass-500 text-surface-base shadow-soft-sm'
+                : 'bg-transparent border border-hairline text-secondary hover:text-primary hover:border-brass-700/60'
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -120,7 +103,7 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
       </div>
 
       {/* Add Task Form */}
-      <div className="mb-3 p-3 bg-white/5 rounded-lg border border-white/10 backdrop-blur-sm">
+      <div className="mb-3 p-3 bg-surface-overlay rounded-card border border-hairline">
         <div className="flex gap-2 mb-2">
           <label htmlFor="task-input" className="sr-only">New task</label>
           <input
@@ -130,7 +113,7 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
             onChange={(e) => setNewTaskText(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && addTask()}
             placeholder="Add a new task..."
-            className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50"
+            className="flex-1 px-3 py-2 bg-surface-sunken border border-hairline rounded-control text-sm text-primary placeholder:text-tertiary focus-visible:outline-none focus-visible:shadow-focus"
           />
         </div>
         <div className="flex gap-2">
@@ -139,16 +122,16 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
             id="priority-select"
             value={newTaskPriority}
             onChange={(e) => setNewTaskPriority(e.target.value as 'low' | 'medium' | 'high')}
-            className="flex-1 px-2 py-1.5 bg-white/5 border border-white/10 rounded text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="flex-1 px-3 py-2 bg-surface-sunken border border-hairline rounded-control text-xs text-primary focus-visible:outline-none focus-visible:shadow-focus"
             aria-label="Select task priority"
           >
-            <option value="low" className="bg-gray-800">Low Priority</option>
-            <option value="medium" className="bg-gray-800">Medium Priority</option>
-            <option value="high" className="bg-gray-800">High Priority</option>
+            <option value="low" className="bg-surface-overlay text-primary">Low Priority</option>
+            <option value="medium" className="bg-surface-overlay text-primary">Medium Priority</option>
+            <option value="high" className="bg-surface-overlay text-primary">High Priority</option>
           </select>
           <button
             onClick={addTask}
-            className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all font-medium"
+            className="px-4 py-2 bg-brass-500 hover:bg-brass-600 text-surface-base text-sm rounded-control font-medium shadow-soft-sm transition-colors focus-visible:outline-none focus-visible:shadow-focus"
           >
             Add
           </button>
@@ -158,7 +141,7 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
       {/* Task List */}
       <div className="flex-1 overflow-y-auto space-y-2">
         {filteredTasks.length === 0 ? (
-          <div className="text-center py-8 text-white/40">
+          <div className="text-center py-8 text-tertiary">
             <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
@@ -166,64 +149,60 @@ export default function TasksWidget({ config, onUpdate }: WidgetProps) {
             <p className="text-xs">Add your first task above</p>
           </div>
         ) : (
-          filteredTasks.map((task) => (
-            <div
-              key={task.id}
-              className={`group p-3 border-l-4 rounded-lg transition-all backdrop-blur-sm ${
-                task.priority === 'high' ? 'border-red-500 bg-red-500/10' :
-                task.priority === 'medium' ? 'border-yellow-500 bg-yellow-500/10' :
-                'border-green-500 bg-green-500/10'
-              } ${task.completed ? 'opacity-60' : ''}`}
-            >
-              <div className="flex items-start gap-3">
-                {/* Checkbox */}
-                <button
-                  onClick={() => toggleTask(task.id)}
-                  className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                    task.completed
-                      ? 'bg-green-500 border-green-500'
-                      : 'border-white/30 hover:border-green-500'
-                  }`}
-                >
-                  {task.completed && (
-                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </button>
+          filteredTasks.map((task) => {
+            const prio = PRIORITY_COLORS[task.priority]
+            return (
+              <div
+                key={task.id}
+                className={`group p-3 rounded-card border border-hairline transition-colors ${prio.bg} ${task.completed ? 'opacity-60' : ''}`}
+              >
+                <div className="flex items-start gap-3">
+                  {/* Checkbox */}
+                  <button
+                    onClick={() => toggleTask(task.id)}
+                    className={`mt-1 w-5 h-5 rounded-control border flex items-center justify-center transition-colors ${
+                      task.completed
+                        ? 'bg-forest-500 border-forest-500'
+                        : 'border-hairline hover:border-forest-500'
+                    }`}
+                    aria-label={task.completed ? 'Mark task incomplete' : 'Mark task complete'}
+                  >
+                    {task.completed && (
+                      <svg className="w-3 h-3 text-surface-base" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
 
-                {/* Task Content */}
-                <div className="flex-1 min-w-0">
-                  <p className={`text-sm ${task.completed ? 'line-through text-white/50' : 'text-white'}`}>
-                    {task.text}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      task.priority === 'high' ? 'bg-red-500/20 text-red-400' :
-                      task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-green-500/20 text-green-400'
-                    }`}>
-                      {task.priority}
-                    </span>
-                    <span className="text-xs text-white/40">
-                      {new Date(task.createdAt).toLocaleDateString()}
-                    </span>
+                  {/* Task Content */}
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm ${task.completed ? 'line-through text-tertiary' : 'text-primary'}`}>
+                      {task.text}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-xs px-2 py-1 rounded-control border font-medium ${prio.bg} ${prio.text} ${prio.border}`}>
+                        {task.priority}
+                      </span>
+                      <span className="text-xs text-tertiary">
+                        {new Date(task.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Delete Button */}
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1.5 text-red-400 hover:bg-red-500/20 rounded transition-all"
-                  title="Delete task"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="opacity-0 group-hover:opacity-100 p-1 text-burgundy-300 hover:bg-burgundy-500/15 rounded-control transition-colors focus-visible:outline-none focus-visible:shadow-focus"
+                    title="Delete task"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            )
+          })
         )}
       </div>
     </div>

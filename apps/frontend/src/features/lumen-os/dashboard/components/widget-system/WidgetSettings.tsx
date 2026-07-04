@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { WidgetConfig } from '../../types'
 import { getWidgetMetadata } from '../../services'
 
@@ -9,10 +9,31 @@ interface WidgetSettingsProps {
   onSave: (settings: Record<string, any>) => void
 }
 
+// Shared control styling — ONE brass focus ring for every input, select and
+// checkbox (see DESIGN-SYSTEM.md §2/§5/§6). No per-widget focus colors.
+const inputClass =
+  'w-full rounded-control border border-hairline bg-surface-sunken px-3 py-2 text-primary transition-colors placeholder:text-tertiary focus-visible:border-brass-500/50 focus-visible:outline-none focus-visible:shadow-focus'
+const labelClass = 'mb-2 block text-sm font-medium text-secondary'
+const helpClass = 'mt-1 text-xs text-tertiary'
+const checkboxClass =
+  'h-4 w-4 shrink-0 rounded-control accent-brass-500 focus-visible:outline-none focus-visible:shadow-focus'
+const checkboxLabelClass = 'ml-2 text-sm text-secondary'
+
 export default function WidgetSettings({ widget, isOpen, onClose, onSave }: WidgetSettingsProps) {
   const metadata = getWidgetMetadata(widget.type)
   const [settings, setSettings] = useState<Record<string, any>>(widget.settings || {})
   const [data, setData] = useState<Record<string, any>>(widget.data || {})
+  const titleId = `widget-settings-title-${widget.id}`
+
+  // Close on Escape while the modal is open.
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isOpen, onClose])
 
   if (!isOpen) return null
 
@@ -38,7 +59,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="maxNotes" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="maxNotes" className={labelClass}>
                 Max Notes to Display
               </label>
               <input
@@ -46,7 +67,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 type="number"
                 value={settings.maxNotes || 10}
                 onChange={(e) => setSettings({ ...settings, maxNotes: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className={inputClass}
                 min="1"
                 max="50"
                 aria-label="Max Notes to Display"
@@ -58,9 +79,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="showTimestamps"
                 checked={settings.showTimestamps !== false}
                 onChange={(e) => setSettings({ ...settings, showTimestamps: e.target.checked })}
-                className="w-4 h-4 text-green-600 rounded focus:ring-green-500"
+                className={checkboxClass}
               />
-              <label htmlFor="showTimestamps" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="showTimestamps" className={checkboxLabelClass}>
                 Show timestamps
               </label>
             </div>
@@ -71,14 +92,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="timeRange" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="timeRange" className={labelClass}>
                 Time Range
               </label>
               <select
                 id="timeRange"
                 value={settings.timeRange || 'week'}
                 onChange={(e) => setSettings({ ...settings, timeRange: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={inputClass}
                 aria-label="Time Range"
               >
                 <option value="day">Last 24 Hours</option>
@@ -93,9 +114,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="showGoals"
                 checked={settings.showGoals !== false}
                 onChange={(e) => setSettings({ ...settings, showGoals: e.target.checked })}
-                className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                className={checkboxClass}
               />
-              <label htmlFor="showGoals" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="showGoals" className={checkboxLabelClass}>
                 Display study goals
               </label>
             </div>
@@ -106,7 +127,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="dailyGoal" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="dailyGoal" className={labelClass}>
                 Daily Goal (minutes)
               </label>
               <input
@@ -114,7 +135,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 type="number"
                 value={settings.dailyGoal || 60}
                 onChange={(e) => setSettings({ ...settings, dailyGoal: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className={inputClass}
                 min="5"
                 max="480"
                 step="5"
@@ -127,9 +148,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="celebrateStreaks"
                 checked={settings.celebrateStreaks !== false}
                 onChange={(e) => setSettings({ ...settings, celebrateStreaks: e.target.checked })}
-                className="w-4 h-4 text-pink-600 rounded focus:ring-pink-500"
+                className={checkboxClass}
               />
-              <label htmlFor="celebrateStreaks" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="celebrateStreaks" className={checkboxLabelClass}>
                 Celebrate milestone streaks
               </label>
             </div>
@@ -140,7 +161,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="cardsPerSession" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="cardsPerSession" className={labelClass}>
                 Cards per Session
               </label>
               <input
@@ -148,7 +169,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 type="number"
                 value={settings.cardsPerSession || 20}
                 onChange={(e) => setSettings({ ...settings, cardsPerSession: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className={inputClass}
                 min="5"
                 max="100"
                 step="5"
@@ -156,14 +177,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
               />
             </div>
             <div>
-              <label htmlFor="algorithm" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="algorithm" className={labelClass}>
                 Review Algorithm
               </label>
               <select
                 id="algorithm"
                 value={settings.algorithm || 'spaced'}
                 onChange={(e) => setSettings({ ...settings, algorithm: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className={inputClass}
                 aria-label="Review Algorithm"
               >
                 <option value="random">Random</option>
@@ -177,9 +198,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="autoFlip"
                 checked={settings.autoFlip === true}
                 onChange={(e) => setSettings({ ...settings, autoFlip: e.target.checked })}
-                className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                className={checkboxClass}
               />
-              <label htmlFor="autoFlip" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="autoFlip" className={checkboxLabelClass}>
                 Auto-flip cards after 3 seconds
               </label>
             </div>
@@ -190,7 +211,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="maxLinks" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="maxLinks" className={labelClass}>
                 Number of Quick Links
               </label>
               <input
@@ -198,7 +219,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 type="number"
                 value={settings.maxLinks || 6}
                 onChange={(e) => setSettings({ ...settings, maxLinks: parseInt(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className={inputClass}
                 min="3"
                 max="12"
                 aria-label="Number of Quick Links"
@@ -210,9 +231,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="showIcons"
                 checked={settings.showIcons !== false}
                 onChange={(e) => setSettings({ ...settings, showIcons: e.target.checked })}
-                className="w-4 h-4 text-amber-600 rounded focus:ring-amber-500"
+                className={checkboxClass}
               />
-              <label htmlFor="showIcons" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="showIcons" className={checkboxLabelClass}>
                 Show link icons
               </label>
             </div>
@@ -223,14 +244,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="defaultView" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="defaultView" className={labelClass}>
                 Default View
               </label>
               <select
                 id="defaultView"
                 value={settings.defaultView || 'month'}
                 onChange={(e) => setSettings({ ...settings, defaultView: e.target.value })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className={inputClass}
                 aria-label="Default View"
               >
                 <option value="day">Day</option>
@@ -244,9 +265,9 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 id="showWeekends"
                 checked={settings.showWeekends !== false}
                 onChange={(e) => setSettings({ ...settings, showWeekends: e.target.checked })}
-                className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500"
+                className={checkboxClass}
               />
-              <label htmlFor="showWeekends" className="ml-2 text-sm text-slate-700">
+              <label htmlFor="showWeekends" className={checkboxLabelClass}>
                 Show weekends
               </label>
             </div>
@@ -257,7 +278,7 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
         return (
           <div className="space-y-4">
             <div>
-              <label htmlFor="workDuration" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="workDuration" className={labelClass}>
                 Focus Duration (minutes)
               </label>
               <input
@@ -267,14 +288,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 max="120"
                 value={data.workDuration || 25}
                 onChange={(e) => setData({ ...data, workDuration: parseInt(e.target.value) || 1 })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                className={inputClass}
                 aria-label="Focus Duration"
               />
-              <p className="text-xs text-slate-500 mt-1">How long each focus session lasts</p>
+              <p className={helpClass}>How long each focus session lasts</p>
             </div>
-            
+
             <div>
-              <label htmlFor="shortBreakDuration" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="shortBreakDuration" className={labelClass}>
                 Short Break (minutes)
               </label>
               <input
@@ -284,14 +305,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 max="30"
                 value={data.shortBreakDuration || 5}
                 onChange={(e) => setData({ ...data, shortBreakDuration: parseInt(e.target.value) || 1 })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                className={inputClass}
                 aria-label="Short Break Duration"
               />
-              <p className="text-xs text-slate-500 mt-1">Break after each focus session</p>
+              <p className={helpClass}>Break after each focus session</p>
             </div>
-            
+
             <div>
-              <label htmlFor="longBreakDuration" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="longBreakDuration" className={labelClass}>
                 Long Break (minutes)
               </label>
               <input
@@ -301,14 +322,14 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 max="60"
                 value={data.longBreakDuration || 15}
                 onChange={(e) => setData({ ...data, longBreakDuration: parseInt(e.target.value) || 1 })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={inputClass}
                 aria-label="Long Break Duration"
               />
-              <p className="text-xs text-slate-500 mt-1">Break after completing all focus blocks</p>
+              <p className={helpClass}>Break after completing all focus blocks</p>
             </div>
-            
+
             <div>
-              <label htmlFor="blocksBeforeLongBreak" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="blocksBeforeLongBreak" className={labelClass}>
                 Focus Blocks Before Long Break
               </label>
               <input
@@ -318,10 +339,10 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
                 max="10"
                 value={data.blocksBeforeLongBreak || 4}
                 onChange={(e) => setData({ ...data, blocksBeforeLongBreak: parseInt(e.target.value) || 4 })}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className={inputClass}
                 aria-label="Blocks Before Long Break"
               />
-              <p className="text-xs text-slate-500 mt-1">Number of focus sessions before taking a long break (default: 4)</p>
+              <p className={helpClass}>Number of focus sessions before taking a long break (default: 4)</p>
             </div>
           </div>
         )
@@ -329,18 +350,18 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
       case 'tasks':
       case 'goals':
         return (
-          <div className="text-center py-8 text-slate-500">
-            <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="py-8 text-center">
+            <svg className="mx-auto mb-3 h-12 w-12 text-brass-500/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             </svg>
-            <p className="text-sm">Widget settings are configured within the widget</p>
-            <p className="text-xs mt-1">Use the controls in the widget itself</p>
+            <p className="text-sm text-secondary">Widget settings are configured within the widget</p>
+            <p className="mt-1 text-xs text-tertiary">Use the controls in the widget itself</p>
           </div>
         )
 
       default:
         return (
-          <div className="text-center py-8 text-slate-500">
+          <div className="py-8 text-center text-secondary">
             <p>No settings available for this widget</p>
           </div>
         )
@@ -348,47 +369,58 @@ export default function WidgetSettings({ widget, isOpen, onClose, onSave }: Widg
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-slideUp">
-        <div className={`bg-gradient-to-r ${metadata.gradient} p-5 rounded-t-2xl`}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={metadata.icon} />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-white">{metadata.name} Settings</h2>
-                <p className="text-white/80 text-xs">Customize your widget</p>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-              aria-label="Close settings"
-            >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-surface-base/80 p-4 backdrop-blur-sm"
+      onMouseDown={onClose}
+      role="presentation"
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-card border border-hairline bg-surface-overlay shadow-soft-lg"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
+        {/* Header — flat warm surface; the ONE sanctioned gradient lives on the icon chip only. */}
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-hairline p-gutter">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-gradient-to-br ${metadata.gradient} shadow-soft-sm`}>
+              <svg className="h-5 w-5 text-ivory-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={metadata.icon} />
               </svg>
-            </button>
+            </div>
+            <div className="min-w-0">
+              <h2 id={titleId} className="truncate text-xl text-primary">
+                {metadata.name} Settings
+              </h2>
+              <p className="text-xs text-tertiary">Customize your widget</p>
+            </div>
           </div>
-        </div>
-
-        <div className="p-6">
-          {renderSettings()}
-        </div>
-
-        <div className="px-6 pb-6 flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition-colors"
+            className="shrink-0 rounded-control p-2 text-secondary transition-colors hover:bg-brass-500/10 hover:text-primary focus-visible:outline-none focus-visible:shadow-focus"
+            aria-label="Close settings"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto p-gutter">{renderSettings()}</div>
+
+        {/* Footer */}
+        <div className="flex shrink-0 gap-3 border-t border-hairline p-gutter">
+          <button
+            onClick={onClose}
+            className="flex-1 rounded-control border border-hairline bg-transparent px-4 py-2 font-medium text-secondary transition-colors hover:border-brass-700/60 hover:text-primary focus-visible:outline-none focus-visible:shadow-focus"
           >
             Cancel
           </button>
           <button
             onClick={widget.type === 'pomodoro' ? handleSaveWithData : handleSave}
-            className={`flex-1 px-4 py-2.5 bg-gradient-to-r ${metadata.gradient} text-white rounded-lg font-medium hover:shadow-lg transition-all`}
+            className="flex-1 rounded-control bg-brass-500 px-4 py-2 font-medium text-surface-base shadow-soft-sm transition-colors hover:bg-brass-600 focus-visible:outline-none focus-visible:shadow-focus"
           >
             Save Settings
           </button>

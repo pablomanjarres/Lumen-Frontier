@@ -71,7 +71,7 @@ export function conditionalClass(
  * Merge multiple class names, removing duplicates.
  *
  * @example
- * mergeClasses('text-sm', 'text-sm text-blue-500') // 'text-sm text-blue-500'
+ * mergeClasses('text-sm', 'text-sm text-brass-500') // 'text-sm text-brass-500'
  *
  * @param classes - Class names to merge
  * @returns Merged class names without duplicates
@@ -92,7 +92,7 @@ export function mergeClasses(...classes: string[]): string {
  * Helper to combine base classes with optional additional classes.
  *
  * @example
- * withBase('px-4 py-2', 'bg-blue-500') // 'px-4 py-2 bg-blue-500'
+ * withBase('px-4 py-2', 'bg-brass-500') // 'px-4 py-2 bg-brass-500'
  * withBase('px-4 py-2', undefined) // 'px-4 py-2'
  *
  * @param baseClasses - Base classes always applied

@@ -100,49 +100,50 @@ export const WIDGET_DEFAULTS = {
   },
 } as const
 
-// Priority Colors Mapping
+// Priority Colors — warm dark-mode semantics.
+// forest = low / success · brass = medium / focus · burgundy = high / danger
 export const PRIORITY_COLORS = {
   low: {
-    bg: 'bg-green-100',
-    border: 'border-green-300',
-    text: 'text-green-700',
-    dot: 'bg-green-500',
+    bg: 'bg-forest-500/15',
+    border: 'border-forest-500/30',
+    text: 'text-forest-300',
+    dot: 'bg-forest-500',
   },
   medium: {
-    bg: 'bg-yellow-100',
-    border: 'border-yellow-300',
-    text: 'text-yellow-700',
-    dot: 'bg-yellow-500',
+    bg: 'bg-brass-500/15',
+    border: 'border-brass-500/30',
+    text: 'text-brass-300',
+    dot: 'bg-brass-500',
   },
   high: {
-    bg: 'bg-red-100',
-    border: 'border-red-300',
-    text: 'text-red-700',
-    dot: 'bg-red-500',
+    bg: 'bg-burgundy-500/15',
+    border: 'border-burgundy-500/30',
+    text: 'text-burgundy-300',
+    dot: 'bg-burgundy-500',
   },
 } as const
 
-// Goal Category Colors
+// Goal Category Colors — warm dark-mode palette (no generic blue/purple/green/gray)
 export const CATEGORY_COLORS = {
   daily: {
-    bg: 'bg-blue-100',
-    text: 'text-blue-700',
-    progress: 'from-blue-400 to-blue-600',
+    bg: 'bg-brass-500/15',
+    text: 'text-brass-300',
+    progress: 'from-brass-500 to-brass-600',
   },
   weekly: {
-    bg: 'bg-purple-100',
-    text: 'text-purple-700',
-    progress: 'from-purple-400 to-purple-600',
+    bg: 'bg-cognac-500/15',
+    text: 'text-cognac-300',
+    progress: 'from-cognac-500 to-cognac-600',
   },
   monthly: {
-    bg: 'bg-green-100',
-    text: 'text-green-700',
-    progress: 'from-green-400 to-green-600',
+    bg: 'bg-forest-500/15',
+    text: 'text-forest-300',
+    progress: 'from-forest-500 to-forest-600',
   },
   custom: {
-    bg: 'bg-gray-100',
-    text: 'text-gray-700',
-    progress: 'from-gray-400 to-gray-600',
+    bg: 'bg-burgundy-500/15',
+    text: 'text-burgundy-300',
+    progress: 'from-burgundy-500 to-burgundy-600',
   },
 } as const
 

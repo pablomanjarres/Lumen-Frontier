@@ -6,6 +6,7 @@ import ResizeHandle from './ResizeHandle'
 import { useDrag } from '../../hooks'
 import { useResize } from '../../hooks'
 import { getWidgetMetadata } from '../../services'
+import { WIDGET_CONSTRAINTS } from '../../constants'
 import type { WidgetConfig } from '../../types'
 import '@/styles/dashboard.css'
 
@@ -82,13 +83,17 @@ export default function WidgetContainer({ widget, isEditMode, onUpdate, onRemove
       <div
         ref={widgetRef}
         id={`widget-${widget.id}`}
-        className={`widget-container absolute rounded-2xl overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-cognac-950/40 via-burgundy-950/50 to-forest-950/60 border-2 ${
+        className={`widget-container absolute overflow-hidden rounded-card border bg-surface-raised ${
           isDragging || isResizing ? '' : 'transition-all duration-200'
-        } ${isDragging ? 'shadow-2xl shadow-brass-900/60 scale-[1.02] z-50 border-brass-600/50' : 'shadow-xl shadow-black/60 border-brass-800/30'} ${
-          isResizing ? 'z-50' : ''
-        } ${widget.minimized ? 'h-auto' : ''} ${
-          isEditMode && !isDragging && !isResizing ? 'ring-2 ring-brass-500/50' : ''
-        }`}
+        } ${
+          isDragging
+            ? 'z-50 border-brass-600/60 shadow-soft-lg'
+            : isResizing
+              ? 'z-50 border-brass-700/50 shadow-soft-lg'
+              : isEditMode
+                ? 'border-brass-800/40 shadow-soft'
+                : 'border-hairline shadow-soft'
+        } ${widget.minimized ? 'h-auto' : ''}`}
       >
         <WidgetHeader
           widget={widget}
@@ -101,7 +106,10 @@ export default function WidgetContainer({ widget, isEditMode, onUpdate, onRemove
         />
  
       {!widget.minimized && (
-        <div className="widget-content p-3 overflow-auto text-white h-[calc(100%-56px)]">
+        <div
+          className="widget-content p-3 overflow-auto text-primary"
+          style={{ height: `calc(100% - ${WIDGET_CONSTRAINTS.HEADER_HEIGHT}px)` }}
+        >
           <WidgetRenderer
             config={widget}
             onUpdate={onUpdate}

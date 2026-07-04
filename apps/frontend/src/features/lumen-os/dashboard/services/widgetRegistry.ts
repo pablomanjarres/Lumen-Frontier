@@ -1,5 +1,14 @@
 import type { WidgetMetadata, WidgetType } from '@/types/widgets'
 
+/**
+ * Widget registry — the single source of truth for widget metadata.
+ *
+ * `color` (hex) and `gradient` (Tailwind classes) MUST stay within the warm
+ * "Old Money" palette (brass / cognac / burgundy / forest). This de-rainbows
+ * the Marketplace tiles and the Settings headers at the source. Gradients are
+ * grouped by category so tiles read as one warm family, not a rainbow.
+ * See apps/frontend/DESIGN-SYSTEM.md.
+ */
 export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
   notes: {
     type: 'notes',
@@ -12,8 +21,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 600,
     maxHeight: 800,
     category: 'productivity',
-    color: '#10b981',
-    gradient: 'from-green-400 to-emerald-600'
+    color: '#cd6f12',
+    gradient: 'from-brass-500 to-cognac-600'
   },
   flashcards: {
     type: 'flashcards',
@@ -26,8 +35,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 700,
     maxHeight: 600,
     category: 'learning',
-    color: '#8b5cf6',
-    gradient: 'from-purple-400 to-indigo-600'
+    color: '#a02f44',
+    gradient: 'from-burgundy-500 to-burgundy-700'
   },
   analytics: {
     type: 'analytics',
@@ -40,8 +49,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 800,
     maxHeight: 600,
     category: 'analytics',
-    color: '#3b82f6',
-    gradient: 'from-blue-400 to-cyan-600'
+    color: '#b67049',
+    gradient: 'from-cognac-500 to-brass-600'
   },
   'quick-access': {
     type: 'quick-access',
@@ -54,8 +63,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 500,
     maxHeight: 300,
     category: 'utility',
-    color: '#f59e0b',
-    gradient: 'from-amber-400 to-orange-600'
+    color: '#cd6f12',
+    gradient: 'from-brass-400 to-brass-600'
   },
   progress: {
     type: 'progress',
@@ -68,8 +77,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 500,
     maxHeight: 300,
     category: 'learning',
-    color: '#ec4899',
-    gradient: 'from-pink-400 to-rose-600'
+    color: '#a02f44',
+    gradient: 'from-burgundy-500 to-cognac-700'
   },
   calendar: {
     type: 'calendar',
@@ -82,8 +91,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 600,
     maxHeight: 600,
     category: 'productivity',
-    color: '#6366f1',
-    gradient: 'from-indigo-400 to-purple-600'
+    color: '#a95c3d',
+    gradient: 'from-cognac-500 to-cognac-700'
   },
   pomodoro: {
     type: 'pomodoro',
@@ -96,8 +105,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 500,
     maxHeight: 600,
     category: 'productivity',
-    color: '#ef4444',
-    gradient: 'from-red-400 to-rose-600'
+    color: '#cd6f12',
+    gradient: 'from-brass-600 to-cognac-700'
   },
   tasks: {
     type: 'tasks',
@@ -110,8 +119,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 600,
     maxHeight: 700,
     category: 'productivity',
-    color: '#0ea5e9',
-    gradient: 'from-sky-400 to-blue-600'
+    color: '#cd6f12',
+    gradient: 'from-brass-500 to-brass-700'
   },
   goals: {
     type: 'goals',
@@ -124,8 +133,8 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxWidth: 600,
     maxHeight: 700,
     category: 'learning',
-    color: '#06b6d4',
-    gradient: 'from-cyan-400 to-teal-600'
+    color: '#3f663e',
+    gradient: 'from-forest-500 to-forest-700'
   },
   track: {
     type: 'track',
@@ -153,7 +162,7 @@ export const WIDGET_REGISTRY: Record<WidgetType, WidgetMetadata> = {
     maxHeight: 800,
     category: 'productivity',
     color: '#722639',
-    gradient: 'from-burgundy-500 to-burgundy-700'
+    gradient: 'from-burgundy-600 to-cognac-700'
   },
   ambience: {
     type: 'ambience',
@@ -214,8 +223,8 @@ export function getWidgetMetadata(type: WidgetType): WidgetMetadata {
       maxWidth: 800,
       maxHeight: 800,
       category: 'utility',
-      color: '#94a3b8',
-      gradient: 'from-slate-400 to-slate-600'
+      color: '#8d4935',
+      gradient: 'from-cognac-600 to-cognac-800'
     }
   }
 
