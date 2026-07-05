@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://pablomanjarres.com/oss/lumen-frontier">
-    <img src=".github/banner.png" alt="Lumen Frontier" width="100%" />
+    <img src=".github/banner.webp" alt="Lumen Frontier" width="100%" />
   </a>
 </p>
 
